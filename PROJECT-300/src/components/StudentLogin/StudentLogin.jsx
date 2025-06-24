@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 export default function StudentLogin({ onNavigate }) {
   const [Data, setData] = useState({
     email: "",
@@ -16,7 +16,6 @@ export default function StudentLogin({ onNavigate }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Student Login attempt:", Data);
-    // Add real login logic here
   };
 
   return (
@@ -29,8 +28,8 @@ export default function StudentLogin({ onNavigate }) {
             <span className="logo-text">MuPortal</span>
           </div>
           <nav className="nav">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
@@ -38,21 +37,23 @@ export default function StudentLogin({ onNavigate }) {
               }}
             >
               Home
-            </a>
-            <a
-              href="#"
+            </Link>
+
+            <Link
+              to="/about"
               className="nav-link"
               onClick={(e) => e.preventDefault()}
             >
               About
-            </a>
-            <a
-              href="#"
+            </Link>
+
+            <Link
+              to="/contact"
               className="nav-link"
               onClick={(e) => e.preventDefault()}
             >
               Contact
-            </a>
+            </Link>
           </nav>
           <div className="auth-buttons">
             <button className="login-btn active">Login</button>

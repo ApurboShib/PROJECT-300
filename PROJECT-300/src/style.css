@@ -17,7 +17,7 @@ body {
 
 .header {
     background: white;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 2px solid #e5e7eb;
     padding: 1rem 0;
 }
 
@@ -193,6 +193,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
+
+
 
 .hero-title {
     font-size: 3.5rem;
