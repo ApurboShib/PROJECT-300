@@ -5,7 +5,7 @@ export default function HomePage({ onNavigate }) {
       <header className="header-simple">
         <div className="header-content">
           <div className="logo">
-            <span className="logo-icon">📚</span>
+            <span className="logo-icon">🎓</span>
             <span className="logo-text">MuPortal</span>
           </div>
           <nav className="nav-center">
