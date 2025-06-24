@@ -473,3 +473,9 @@ body {
         order: 3;
     }
 }
+
+
+.logo-image {
+    height: 80px;
+    object-fit: contain;
+}
