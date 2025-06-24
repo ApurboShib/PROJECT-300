@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function HomePage({ onNavigate }) {
   return (
     <div className="home-page">
@@ -9,8 +10,8 @@ export default function HomePage({ onNavigate }) {
             <span className="logo-text">MuPortal</span>
           </div>
           <nav className="nav-center">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
@@ -18,25 +19,28 @@ export default function HomePage({ onNavigate }) {
               }}
             >
               Home
-            </a>
-            <a
-              href="#"
+            </Link>
+
+            <Link
+              to="/about"
               className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
+                onNavigate("about");
               }}
             >
               About
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/contact"
               className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
+                onNavigate("contact");
               }}
             >
               Contact
-            </a>
+            </Link>
           </nav>
           <div className="auth-buttons">
             <button
@@ -58,7 +62,6 @@ export default function HomePage({ onNavigate }) {
       {/* Hero Section */}
       <main className="hero-section">
         <div className="hero-content">
-         
           <h1 className="hero-title">
             MuPortal - University Material Sharing Portal
           </h1>
