@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import logo from "../../assets/mu_portal_logo.png";
 export default function StudentSignup({ onNavigate }) {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -40,8 +40,7 @@ export default function StudentSignup({ onNavigate }) {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <span className="logo-icon">📚</span>
-            <span className="logo-text">MuPortal</span>
+            <img src={logo} alt="MuPortal Logo" className="logo-image" />
           </div>
           <nav className="nav">
             <a

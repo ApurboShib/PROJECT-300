@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/mu_portal_logo.png"
+import logo from "../../assets/mu_portal_logo.png";
 export default function HomePage({ onNavigate }) {
   return (
     <div className="home-page">
@@ -8,7 +8,7 @@ export default function HomePage({ onNavigate }) {
         <div className="header-content">
           <div className="logo">
             {/* <span className="logo-icon">🎓</span> */}
-       {/* <span className="logo-text">MuPortal</span>      */}
+            {/* <span className="logo-text">MuPortal</span>      */}
             <img src={logo} alt="MuPortal Logo" className="logo-image" />
           </div>
           <nav className="nav-center">

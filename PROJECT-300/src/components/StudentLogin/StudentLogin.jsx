@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../../assets/mu_portal_logo.png";
 export default function StudentLogin({ onNavigate }) {
   const [Data, setData] = useState({
     email: "",
@@ -24,8 +25,7 @@ export default function StudentLogin({ onNavigate }) {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <span className="logo-icon">📚</span>
-            <span className="logo-text">MuPortal</span>
+            <img src={logo} alt="MuPortal Logo" className="logo-image" />
           </div>
           <nav className="nav">
             <Link
