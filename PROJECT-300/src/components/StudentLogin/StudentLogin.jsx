@@ -1,22 +1,42 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/mu_portal_logo.png";
+
 export default function StudentLogin({ onNavigate }) {
-  const [Data, setData] = useState({
-    email: "",
+  const [formData, setFormData] = useState({
+    student_id: "",
     password: "",
   });
 
   const handleInputChange = (e) => {
-    setData({
-      ...Data,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Student Login attempt:", Data);
+
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Login successful! Welcome " + data.name);
+        // onNavigate("dashboard") — you can navigate somewhere here
+      } else {
+        alert("error " + data.error);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -38,20 +58,10 @@ export default function StudentLogin({ onNavigate }) {
             >
               Home
             </Link>
-
-            <Link
-              to="/about"
-              className="nav-link"
-              onClick={(e) => e.preventDefault()}
-            >
+            <Link to="/about" className="nav-link" onClick={(e) => e.preventDefault()}>
               About
             </Link>
-
-            <Link
-              to="/contact"
-              className="nav-link"
-              onClick={(e) => e.preventDefault()}
-            >
+            <Link to="/contact" className="nav-link" onClick={(e) => e.preventDefault()}>
               Contact
             </Link>
           </nav>
@@ -75,13 +85,13 @@ export default function StudentLogin({ onNavigate }) {
 
             <form onSubmit={handleSubmit} className="login-form">
               <div className="form-group">
-                <label className="form-label">Email</label>
+                <label className="form-label">Student ID</label>
                 <input
-                  type="email"
-                  name="email"
+                  type="text"
+                  name="student_id"
                   className="form-input"
-                  placeholder="Enter your email"
-                  value={Data.email}
+                  placeholder="e.g. 222-115-090"
+                  value={formData.student_id}
                   onChange={handleInputChange}
                   required
                 />
@@ -94,7 +104,7 @@ export default function StudentLogin({ onNavigate }) {
                   name="password"
                   className="form-input"
                   placeholder="Enter your password"
-                  value={Data.password}
+                  value={formData.password}
                   onChange={handleInputChange}
                   required
                 />
@@ -111,10 +121,6 @@ export default function StudentLogin({ onNavigate }) {
                 Signup
               </button>
             </p>
-
-            <div className="demo-info">
-              Demo Student: student@muportal.com / student123
-            </div>
           </div>
         </div>
       </main>

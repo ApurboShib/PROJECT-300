@@ -37,3 +37,35 @@ app.post('/signup', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+// Login Route
+app.post('/login', async (req, res) => {
+  const { student_id, password } = req.body;
+
+  try {
+    // 1. Find student by student_id
+    const result = await pool.query(
+      'SELECT * FROM student_info WHERE student_id = $1',
+      [student_id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid student ID or password' });
+    }
+
+    const user = result.rows[0];
+
+    // 2. Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid student ID or password' });
+    }
+
+    // ✅ Successful login
+    res.status(200).json({ message: 'Login successful', name: user.name });
+  } catch (err) {
+    console.error('❌ Login error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
