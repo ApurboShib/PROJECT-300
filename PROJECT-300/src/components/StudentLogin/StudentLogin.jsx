@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import logo from "../../assets/mu_portal_logo.png";
 
 export default function StudentLogin({ onNavigate }) {
@@ -7,6 +6,7 @@ export default function StudentLogin({ onNavigate }) {
     student_id: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -17,25 +17,33 @@ export default function StudentLogin({ onNavigate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          student_id: formData.student_id,
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Login successful! Welcome " + data.name);
-        // onNavigate("dashboard") — you can navigate somewhere here
+        alert("Login successful!");
+        onNavigate("dashboard"); // Navigate to dashboard after successful login
       } else {
-        alert("error " + data.error);
+        alert(data.error || "Login failed.");
       }
-    } catch (err) {
-      console.error("Login error:", err);
-      alert("Something went wrong. Please try again.");
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Something went wrong.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,11 +53,17 @@ export default function StudentLogin({ onNavigate }) {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <img src={logo} alt="MuPortal Logo" className="logo-image" />
+            <img
+              src={logo || "/placeholder.svg"}
+              alt="MuPortal Logo"
+              className="logo-image"
+              onClick={() => onNavigate("home")}
+              style={{ cursor: "pointer" }}
+            />
           </div>
           <nav className="nav">
-            <Link
-              to="/"
+            <a
+              href="#"
               className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
@@ -57,13 +71,25 @@ export default function StudentLogin({ onNavigate }) {
               }}
             >
               Home
-            </Link>
-            <Link to="/about" className="nav-link" onClick={(e) => e.preventDefault()}>
+            </a>
+            <a
+              href="#"
+              className="nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
               About
-            </Link>
-            <Link to="/contact" className="nav-link" onClick={(e) => e.preventDefault()}>
+            </a>
+            <a
+              href="#"
+              className="nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
               Contact
-            </Link>
+            </a>
           </nav>
           <div className="auth-buttons">
             <button className="login-btn active">Login</button>
@@ -80,7 +106,7 @@ export default function StudentLogin({ onNavigate }) {
           <div className="login-card">
             <h2 className="login-title">Student Login</h2>
             <p className="login-subtitle">
-              Login to access your courses and resources
+              Sign in to access your MuPortal account
             </p>
 
             <form onSubmit={handleSubmit} className="login-form">
@@ -110,15 +136,19 @@ export default function StudentLogin({ onNavigate }) {
                 />
               </div>
 
-              <button type="submit" className="login-submit-btn">
-                Login
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="login-submit-btn"
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
               </button>
             </form>
 
             <p className="login-footer">
               Don't have an account?{" "}
               <button className="link-btn" onClick={() => onNavigate("signup")}>
-                Signup
+                Sign Up
               </button>
             </p>
           </div>

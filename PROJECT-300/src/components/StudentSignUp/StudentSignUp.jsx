@@ -1,5 +1,6 @@
 import { useState } from "react";
 import logo from "../../assets/mu_portal_logo.png";
+
 export default function StudentSignup({ onNavigate }) {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -8,6 +9,8 @@ export default function StudentSignup({ onNavigate }) {
     confirmPassword: "",
     department: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const departments = [
     "Computer Science",
@@ -25,42 +28,45 @@ export default function StudentSignup({ onNavigate }) {
     });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (formData.password !== formData.confirmPassword) {
-    alert("Passwords do not match!");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: formData.fullName,
-        student_id: formData.student_id, 
-        password: formData.password,
-        department: formData.department,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert("Signup successful!");
-      onNavigate("login");
-    } else {
-      alert(data.error || "Signup failed.");
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
     }
-  } catch (error) {
-    console.error("Error during signup:", error);
-    alert("Something went wrong.");
-  }
-};
 
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.fullName,
+          student_id: formData.student_id,
+          password: formData.password,
+          department: formData.department,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Signup successful!");
+        onNavigate("login");
+      } else {
+        alert(data.error || "Signup failed.");
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="signup-page">
@@ -68,7 +74,13 @@ const handleSubmit = async (e) => {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <img src={logo} alt="MuPortal Logo" className="logo-image" />
+            <img
+              src={logo || "/placeholder.svg"}
+              alt="MuPortal Logo"
+              className="logo-image"
+              onClick={() => onNavigate("home")}
+              style={{ cursor: "pointer" }}
+            />
           </div>
           <nav className="nav">
             <a
@@ -138,15 +150,14 @@ const handleSubmit = async (e) => {
                   type="text"
                   name="student_id"
                   className="form-input"
-                  placeholder="e.g. 222-115-090"  
+                  placeholder="e.g. 222-115-090"
                   value={formData.student_id}
                   onChange={handleInputChange}
-                  pattern="\d{3}-\d{3}-\d{3}"  // optional: validates the format
+                  pattern="\d{3}-\d{3}-\d{3}"
                   title="Format: 222-115-090"
                   required
                 />
               </div>
-
 
               <div className="form-group">
                 <label className="form-label">Password</label>
@@ -192,8 +203,12 @@ const handleSubmit = async (e) => {
                 </select>
               </div>
 
-              <button type="submit" className="signup-submit-btn">
-                Create Account
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="signup-submit-btn"
+              >
+                {isLoading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
 

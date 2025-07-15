@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/mu_portal_logo.png";
+
 export default function HomePage({ onNavigate }) {
   return (
     <div className="home-page">
@@ -7,9 +8,13 @@ export default function HomePage({ onNavigate }) {
       <header className="header-simple">
         <div className="header-content">
           <div className="logo">
-            {/* <span className="logo-icon">🎓</span> */}
-            {/* <span className="logo-text">MuPortal</span>      */}
-            <img src={logo} alt="MuPortal Logo" className="logo-image" />
+            <img
+              src={logo || "/placeholder.svg"}
+              alt="MuPortal Logo"
+              className="logo-image"
+              onClick={() => onNavigate("home")}
+              style={{ cursor: "pointer" }}
+            />
           </div>
           <nav className="nav-center">
             <Link
@@ -22,7 +27,6 @@ export default function HomePage({ onNavigate }) {
             >
               Home
             </Link>
-
             <Link
               to="/about"
               className="nav-link"
@@ -70,7 +74,6 @@ export default function HomePage({ onNavigate }) {
           <p className="hero-subtitle">
             Access slides, sheets, resources, and results from your department
           </p>
-
           <div className="hero-buttons">
             <button
               className="hero-btn primary"
@@ -78,7 +81,12 @@ export default function HomePage({ onNavigate }) {
             >
               Student Login
             </button>
-            <button className="hero-btn secondary">Admin Login</button>
+            <button
+              className="hero-btn secondary"
+              onClick={() => onNavigate("admin-login")}
+            >
+              Admin Login
+            </button>
             <button className="hero-btn secondary">Guest Access</button>
           </div>
         </div>
@@ -92,7 +100,6 @@ export default function HomePage({ onNavigate }) {
               Automatically filtered content based on your department
             </p>
           </div>
-
           <div className="feature-card">
             <div className="feature-icon">📄</div>
             <h3 className="feature-title">Course Materials</h3>
@@ -100,7 +107,6 @@ export default function HomePage({ onNavigate }) {
               Download slides, sheets, and access external resources
             </p>
           </div>
-
           <div className="feature-card">
             <div className="feature-icon">📊</div>
             <h3 className="feature-title">Results & Progress</h3>
